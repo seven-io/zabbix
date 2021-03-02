@@ -68,8 +68,9 @@ optionalArgs = {
 }
 
 parser = argparse.ArgumentParser()
-for k in requiredArgs:
-    parser.add_argument(k, help=requiredArgs[k])
+parser.add_argument('api_key', help=requiredArgs['api_key'])
+parser.add_argument('to', help=requiredArgs['to'])
+parser.add_argument('text', help=requiredArgs['text'])
 for k in optionalArgs:
     parser.add_argument('--%s' % k, **optionalArgs[k])
 
@@ -81,13 +82,8 @@ def terminate(msg, status_code):
 
 if __name__ == '__main__':
     version = int(sys.version[:1])
-    if 2 == version:
-        from urllib2 import Request, urlopen
-        from urllib import urlencode
-    elif 3 == version:
-        from urllib.request import Request, urlopen
-        from urllib.parse import urlencode
-    else:
+
+    if 2 != version and 3 != version:
         terminate('Unsupported python version %d' % version, 2)
 
     try:
@@ -99,17 +95,31 @@ if __name__ == '__main__':
         if not len(requiredArgs[k]):
             terminate('Argument %s must be lengthy!' % k, 3)
 
-    req = urlopen(Request('https://gateway.sms77.io/api/sms', method='POST', headers={
+    headers = {
         'Authorization': 'Basic %s' % args.pop('api_key'),
         'SentWith': 'Zabbix'
-    }, data=urlencode(args).encode()))
-    res = req.read()
+    }
+    url = 'https://gateway.sms77.io/api/sms'
+
+    if 2 == version:
+        from urllib import urlencode
+        from urllib2 import Request, urlopen
+
+        req = Request(url, urlencode(args), headers)
+        res = urlopen(req).read()
+    else:
+        from urllib.request import Request, urlopen
+        from urllib.parse import urlencode
+
+        req = urlopen(
+            Request(url, method='POST', headers=headers, data=urlencode(args).encode()))
+        res = req.read()
 
     if args.get('json'):
         res = json.loads(res)
         code = res['success']
     else:
-        res = str(res.decode(req.headers.get_content_charset() or 'utf-8')).strip()
+        res = str(res.decode('utf-8')).strip()
         code = res.splitlines()[0]
 
     terminate(res, int(100 != int(code)))
