@@ -3,6 +3,7 @@
 import argparse
 import json
 import sys
+from ssl import SSLContext, PROTOCOL_SSLv23
 
 requiredArgs = {
     'api_key': 'Sms77.io API key',
@@ -101,18 +102,21 @@ if __name__ == '__main__':
     }
     url = 'https://gateway.sms77.io/api/sms'
 
+    ssl_context = SSLContext(PROTOCOL_SSLv23)
+
     if 2 == version:
         from urllib import urlencode
         from urllib2 import Request, urlopen
 
         req = Request(url, urlencode(args), headers)
-        res = urlopen(req).read()
+        res = urlopen(req, context=ssl_context).read()
     else:
         from urllib.request import Request, urlopen
         from urllib.parse import urlencode
 
         req = urlopen(
-            Request(url, method='POST', headers=headers, data=urlencode(args).encode()))
+            Request(url, method='POST', headers=headers, data=urlencode(args).encode()),
+            context=ssl_context)
         res = req.read()
 
     if args.get('json'):
