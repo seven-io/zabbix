@@ -6,7 +6,7 @@ import sys
 from ssl import SSLContext, PROTOCOL_SSLv23
 
 requiredArgs = {
-    'api_key': 'Sms77.io API key',
+    'api_key': 'seven.io API key',
     'to': 'Receiver(s) separated by comma',
     'text': 'Message text'
 }
@@ -100,7 +100,7 @@ if __name__ == '__main__':
         'Authorization': 'Basic %s' % args.pop('api_key'),
         'SentWith': 'Zabbix'
     }
-    url = 'https://gateway.sms77.io/api/sms'
+    url = 'https://gateway.seven.io/api/sms'
 
     ssl_context = SSLContext(PROTOCOL_SSLv23)
 

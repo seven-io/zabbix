@@ -1,4 +1,4 @@
-![](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "sms77 Logo")
+![](https://www.seven.io/wp-content/uploads/Logo.svg "seven Logo")
 
 
 # Official Plugin for [Zabbix](https://www.zabbix.com/)
@@ -7,11 +7,11 @@
 
 - Python 2.x / 3.x
 - Zabbix (tested on Zabbix 5.4)
-- An API key from sms77 - you can create one in your [developer dashboard](https://app.sms77.io/developer)
+- An API key from seven - you can create one in your [developer dashboard](https://app.seven.io/developer)
 
 ## Installation
-1. Copy [sms77.py](sms77.py) to the Zabbix alertscripts directory - usually in ```/usr/lib/zabbix/alertscripts```
-2. Make sure the script is executable by running ```chmod +x /usr/lib/zabbix/alertscripts/sms77.py```
+1. Copy [seven.py](seven.py) to the Zabbix alertscripts directory - usually in ```/usr/lib/zabbix/alertscripts```
+2. Make sure the script is executable by running ```chmod +x /usr/lib/zabbix/alertscripts/seven.py```
 3. Open the Zabbix web interface, usually at [http://localhost/zabbix](http://localhost/zabbix)
 4. Navigate to ```Administration > Media types```
 5. Click "Create media type" and fill out the fields [like this](screenshots/media_type.png)
@@ -25,7 +25,7 @@
 
 Available options:
 ```
-sms77.py 
+seven.py 
 [-h] 
 [--debug]
 [--delay DELAY]
@@ -47,6 +47,6 @@ api_key to text
 
 
 ### Support
-Do you need help? Feel free to [contact us](https://www.sms77.io/en/company/contact/).
+Do you need help? Feel free to [contact us](https://www.seven.io/en/company/contact/).
 
 [![MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
