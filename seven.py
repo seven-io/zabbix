@@ -20,15 +20,9 @@ def bool_arg(obj):
 
 
 optionalArgs = {
-    'debug': bool_arg({
-        'help': 'Disable dispatching'
-    }),
     'delay': {
         'help': 'Dispatch at yyyy-mm-dd hh:ii or timestamp'
     },
-    'details': bool_arg({
-        'help': 'Append details'
-    }),
     'flash': bool_arg({
         'help': 'Show directly on the recipients display'
     }),
@@ -44,14 +38,8 @@ optionalArgs = {
     'label': {
         'help': 'Custom label'
     },
-    'no_reload': bool_arg({
-        'help': 'Disable reload lock'
-    }),
     'performance_tracking': bool_arg({
         'help': 'Enable performance tracking'
-    }),
-    'return_msg_id': bool_arg({
-        'help': 'Append msg id'
     }),
     'ttl': {
         'help': 'Custom time to live',
@@ -60,12 +48,6 @@ optionalArgs = {
     'udh': {
         'help': 'Custom user data header'
     },
-    'unicode': bool_arg({
-        'help': 'Force unicode'
-    }),
-    'utf8': bool_arg({
-        'help': 'Force UTF8'
-    }),
 }
 
 parser = argparse.ArgumentParser()
@@ -97,6 +79,7 @@ if __name__ == '__main__':
             terminate('Argument %s must be lengthy!' % k, 3)
 
     headers = {
+        'Accept': 'application/json',
         'Authorization': 'Basic %s' % args.pop('api_key'),
         'SentWith': 'Zabbix'
     }
@@ -119,11 +102,7 @@ if __name__ == '__main__':
             context=ssl_context)
         res = req.read()
 
-    if args.get('json'):
-        res = json.loads(res)
-        code = res['success']
-    else:
-        res = str(res.decode('utf-8')).strip()
-        code = res.splitlines()[0]
+    res = json.loads(res)
+    code = res['success']
 
     terminate(res, int(100 != int(code)))
